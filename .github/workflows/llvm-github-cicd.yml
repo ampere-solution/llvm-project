@@ -34,7 +34,7 @@ jobs:
       - name: Checkout LLVM source code
         uses: actions/checkout@v4
         with:
-          repository: llvm/llvm-project
+          repository: ampere-solution/llvm-project
           path: llvm-project
 
       #- name: Set up build environment
