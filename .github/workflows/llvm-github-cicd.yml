@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         arch: [arm64]
-    runs-on: ${{ matrix.arch == 'x86' && 'arc-runner-set-x86' || 'arc-runner-set-ampere' }}
+    runs-on: ${{ matrix.arch == 'x86' && 'arc-runner-set-x86' || 'arc-runner-set-ampere-llvm' }}
 
     steps:
       - name: Log Operating System Details
