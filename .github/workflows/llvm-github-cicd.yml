@@ -142,7 +142,7 @@ jobs:
       #    github_token: ${{ secrets.TAP_TOKEN }}
 
 ################ Continuous Deployment/Delivery ###########################################
-  deploy:
+  Deploy:
     needs: LLVM_build
     strategy:
       matrix:
