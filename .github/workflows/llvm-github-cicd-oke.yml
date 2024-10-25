@@ -1,0 +1,156 @@
+# This is a basic workflow to help you get started with Actions
+
+name: LLVM-CICD
+
+# Controls when the workflow will run 
+on:
+  push:  
+    branches: [ "main" ]     
+  pull_request:
+    branches: [ "main" ]    
+  workflow_dispatch:
+
+jobs:
+  LLVM_build:
+    permissions:
+      contents: write
+    strategy:
+      matrix:
+        arch: [oci]
+    runs-on: ${{ matrix.arch == 'oci' && 'arc-runner-set-oke-a1-llvm'  }}
+
+    steps:
+      - name: Log Operating System Details
+        run: |
+          echo "Architecture: ${{ matrix.arch }}"
+          uname -a
+          curl https://github.com/ampere-solution/llvm-project.git  
+          lsb_release -a || cat /etc/os-release
+          lscpu
+          
+      - name: Checkout LLVM source code
+        uses: actions/checkout@v4
+        with:
+          repository: ampere-solution/llvm-project
+          path: llvm-project
+
+      - name: Set up build environment
+        run: |
+          sudo dnf update
+          sudo dnf install -y @development-tools cmake ninja-build python3
+
+      - name: Configure LLVM build
+        run: |
+          mkdir -p llvm-project/build
+          cd llvm-project/build
+          cmake -G Ninja \
+           -DLLVM_ENABLE_PROJECTS="clang" \
+            -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
+           -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+           -DCMAKE_BUILD_TYPE=Release \
+           -DLLVM_ENABLE_ASSERTIONS=ON \
+           ../llvm
+
+      - name: Build LLVM
+        run: |
+          cd llvm-project/build
+          ninja
+        env:
+          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 8 || 8 }}
+ 
+      - name: Display build information
+        run: |
+          echo "Architecture: ${{ matrix.arch }}"
+          echo "Build completed on $(date)"
+             
+      # - name: Commit changes
+      #   env: 
+      #     CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      #     CI_COMMIT_AUTHOR: tinguyen-ampere
+      #     GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      #   run: |
+      #     pwd
+      #     cd llvm-project
+      #     ls -la
+      #     pwd
+      #     git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+      #     git config --global user.email "tinguyen@amperecomputing.com"
+      #     echo 'Testing... ' >> README.md
+      #     git add ./README.md
+      #     git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
+      
+############### Push action section #############
+      # - name: Push changes
+      #   env:
+      #     PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+      #     CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+      #     CI_COMMIT_AUTHOR: tinguyen-ampere
+      #   run: |
+      #     pwd
+      #     cd llvm-project
+      #     pwd
+      #     git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+      #     git config --global user.email "tinguyen@amperecomputing.com"
+      #     git pull --rebase origin main
+      #     git branch -M main
+      #     git push https://${PAT_TOKEN}@github.com/ampere-solution/llvm-project.git HEAD:main
+
+################ Continuous Deployment/Delivery ###########################################
+  # Deploy:
+  #   needs: LLVM_build
+  #   strategy:
+  #     matrix:
+  #       arch: [arm64, x86]
+  #   #runs-on: arc-runner-set-ampere-llvm
+  #   runs-on: ${{ matrix.arch == 'x86' && 'arc-runner-set-x86-llvm' || 'arc-runner-set-ampere-llvm' }}
+
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
+  #       with:
+  #         repository: ampere-solution/llvm-project
+  #         path: llvm-project
+
+  #     - name: List repository contents
+  #       run: |
+  #         pwd
+  #         ls -la $GITHUB_WORKSPACE
+  #     - name: Set up build environment
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y build-essential cmake ninja-build python3
+
+  #     - name: Configure LLVM build
+  #       run: |
+  #         mkdir -p llvm-project/build
+  #         cd llvm-project/build
+  #         cmake -G Ninja \
+  #           -DLLVM_ENABLE_PROJECTS="clang" \
+  #            -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
+  #           -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+  #           -DCMAKE_BUILD_TYPE=Release \
+  #           -DLLVM_ENABLE_ASSERTIONS=ON \
+  #           ../llvm
+
+  #     - name: Build LLVM
+  #       run: |
+  #         pwd
+  #         cd llvm-project/build
+  #         ninja
+  #       env:
+  #         LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 8 || 8 }}
+          
+  #     - name: install LLVM
+  #       run: |
+  #         pwd
+  #         ls -la
+  #         cd llvm-project/build
+  #         sudo ninja install
+  #       env:
+  #         LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 8 || 8 }}
+
+  #     - name: Verify the installation
+  #       run: |
+  #         clang --version
+  #         llvm-config --version
+          
