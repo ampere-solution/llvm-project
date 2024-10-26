@@ -16,8 +16,8 @@ jobs:
       contents: write
     strategy:
       matrix:
-        arch: [oci]
-    runs-on: ${{ matrix.arch == 'oci' && 'arc-runner-set-oke-a1-llvm'  }}
+        arch: [oci-oke]
+    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-llvm'  }}
 
     steps:
       - name: Log Operating System Details
@@ -56,7 +56,7 @@ jobs:
           cd llvm-project/build
           ninja
         env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
+          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
  
       - name: Display build information
         run: |
@@ -100,8 +100,8 @@ jobs:
     needs: LLVM_build
     strategy:
       matrix:
-        arch: [oci]
-    runs-on: ${{ matrix.arch == 'oci' && 'arc-runner-set-oke-a1-llvm' }}
+        arch: [oci-oke]
+    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-llvm' }}
 
     steps:
       - name: Checkout repository
@@ -137,7 +137,7 @@ jobs:
           cd llvm-project/build
           ninja
         env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
+          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
           
       - name: install LLVM
         run: |
