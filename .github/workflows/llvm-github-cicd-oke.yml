@@ -100,9 +100,8 @@ jobs:
     needs: LLVM_build
     strategy:
       matrix:
-        arch: [arm64, x86]
-    #runs-on: arc-runner-set-ampere-llvm
-    runs-on: ${{ matrix.arch == 'x86' && 'arc-runner-set-x86-llvm' || 'arc-runner-set-ampere-llvm' }}
+        arch: [oci]
+    runs-on: ${{ matrix.arch == 'oci' && 'arc-runner-set-oke-a1-llvm' }}
 
     steps:
       - name: Checkout repository
@@ -138,7 +137,7 @@ jobs:
           cd llvm-project/build
           ninja
         env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 8 || 8 }}
+          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
           
       - name: install LLVM
         run: |
@@ -147,7 +146,7 @@ jobs:
           cd llvm-project/build
           sudo ninja install
         env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 8 || 8 }}
+          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
 
       - name: Verify the installation
         run: |
