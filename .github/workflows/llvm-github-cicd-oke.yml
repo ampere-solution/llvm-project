@@ -153,3 +153,14 @@ jobs:
           clang --version
           llvm-config --version
           
+      - name: Compile C file using LLVM compiler
+        run: |
+          cd llvm-project
+          clang hello_world.c -o hello_world
+
+      - name: Run the compile program
+        run: |
+          cd llvm_project
+          ./hello_world
+        
+          
