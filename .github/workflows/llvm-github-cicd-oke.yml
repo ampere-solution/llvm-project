@@ -17,7 +17,7 @@ jobs:
     strategy:
       matrix:
         arch: [oci-oke]
-    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-llvm'  }}
+    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm'  }}
 
     steps:
       - name: Log Operating System Details
@@ -101,7 +101,7 @@ jobs:
     strategy:
       matrix:
         arch: [oci-oke]
-    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-llvm' }}
+    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm' }}
 
     steps:
       - name: Checkout repository
