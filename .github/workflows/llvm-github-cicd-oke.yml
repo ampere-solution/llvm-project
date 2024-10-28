@@ -155,12 +155,12 @@ jobs:
           
       - name: Compile C file using LLVM compiler
         run: |
-          cd llvm-project
+          pwd
           clang hello_world.c -o hello_world
 
       - name: Run the compile program
         run: |
-          cd llvm_project
+          pwd
           ./hello_world
         
           
