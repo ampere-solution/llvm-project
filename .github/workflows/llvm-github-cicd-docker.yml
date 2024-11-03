@@ -56,11 +56,16 @@ jobs:
       #     tags: tinguyen2024/llvm:latest
       - name: Start docker
         run: |
+          pwd
+          ls -a
           sudo systemctl start docker
+          sudo systemctl enable docker
           sudo systemctl status docker
       
       - name: Build Docker image
         run: |
+          pwd
+          ls -la
           sudo docker build -t tinguyen2024/llvm:latest .
 
       - name: Push Docker image to Docker Hub
