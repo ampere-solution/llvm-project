@@ -60,7 +60,7 @@ jobs:
           cd llvm-project/docker
           pwd
           ls -la
-          sudo apt update && sudo apt install docker.io
+          sudo apt update -y  && sudo apt install docker.io -y
           sudo docker build -t tinguyen2024/llvm:latest .
 
       - name: Push Docker image to Docker Hub
