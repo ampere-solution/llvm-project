@@ -57,11 +57,12 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t tinguyen2024/llvm:latest .
+          sudo systemctl start docker
+          sudo docker build -t tinguyen2024/llvm:latest .
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker push tinguyen2024/llvm:latest
+          sudo docker push tinguyen2024/llvm:latest
 
       - name: Verify image on GitHub (optional)
         run: docker run --rm tinguyen2024/llvm:latest clang --version
