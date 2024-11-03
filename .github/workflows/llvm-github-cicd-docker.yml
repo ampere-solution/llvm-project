@@ -16,8 +16,8 @@ jobs:
       contents: write
     strategy:
       matrix:
-        arch: [arm64]
-    runs-on: ${{ matrix.arch == 'arc-runner-set-ampere-llvm-docker' }}
+        arch: [docker]
+    runs-on: ${{ matrix.arch == 'docker' && 'arc-runner-set-ampere-llvm-docker' }}
 
     steps:
       - name: Log Operating System Details
