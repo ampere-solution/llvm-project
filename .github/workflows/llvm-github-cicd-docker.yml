@@ -57,7 +57,7 @@ jobs:
       
       - name: Build Docker image
         run: |
-          cd llvm-project
+          cd llvm-project/docker
           pwd
           ls -la
           sudo docker build -t tinguyen2024/llvm:latest .
