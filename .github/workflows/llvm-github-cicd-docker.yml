@@ -46,14 +46,22 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and push Docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile
-          platforms: linux/arm64  # Specify platforms for multi-arch image
-          push: true  # Pushes image to registry
-          tags: tinguyen2024/llvm:latest
+      # - name: Build and push Docker image
+      #   uses: docker/build-push-action@v4
+      #   with:
+      #     context: .
+      #     file: Dockerfile
+      #     platforms: linux/arm64  # Specify platforms for multi-arch image
+      #     push: true  # Pushes image to registry
+      #     tags: tinguyen2024/llvm:latest
+
+      - name: Build Docker image
+        run: |
+          docker build -t tinguyen2024/llvm:latest .
+
+      - name: Push Docker image to Docker Hub
+        run: |
+          docker push tinguyen2024/llvm:latest
 
       - name: Verify image on GitHub (optional)
         run: docker run --rm tinguyen2024/llvm:latest clang --version
