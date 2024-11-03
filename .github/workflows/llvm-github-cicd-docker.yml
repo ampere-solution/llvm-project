@@ -53,17 +53,11 @@ jobs:
       #     file: Dockerfile
       #     platforms: linux/arm64  # Specify platforms for multi-arch image
       #     push: true  # Pushes image to registry
-      #     tags: tinguyen2024/llvm:latest
-      - name: Start docker
-        run: |
-          pwd
-          ls -a
-          sudo systemctl start docker
-          sudo systemctl enable docker
-          sudo systemctl status docker
+      #     tags: tinguyen2024/llvm:latest     
       
       - name: Build Docker image
         run: |
+          cd llvm-project
           pwd
           ls -la
           sudo docker build -t tinguyen2024/llvm:latest .
