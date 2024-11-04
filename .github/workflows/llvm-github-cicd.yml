@@ -208,7 +208,7 @@ jobs:
           ls -la
           clang hello_world.c -o hello_world
 
-      - name: Run the compile program
+      - name: Run the compiled program
         run: |
           cd llvm-project
           pwd
