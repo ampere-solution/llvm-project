@@ -1,4 +1,4 @@
-name: CICD
+name: CICD-benchmark-banshee
 
 # Controls when the workflow will run  
 on:
