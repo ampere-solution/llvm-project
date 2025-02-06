@@ -49,7 +49,7 @@ jobs:
           cd llvm-project/build
           cmake -G Ninja \
             -DLLVM_ENABLE_PROJECTS="clang;libcxx;libcxxabi;lldb;compiler-rt;lld" \
-            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_BUILD_TYPE=Release 
             ../llvm
 
       - name: Build LLVM
