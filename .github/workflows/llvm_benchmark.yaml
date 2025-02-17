@@ -107,16 +107,29 @@ jobs:
       - name: Execute tests
         run: |
           cd test-suite-build
+          ../llvm-project/build/bin/llvm-lit -v -j$(nproc) -o results.json .
           # ../llvm-project/build/bin/llvm-lit -v -j 1 -o results.json .
-          ../llvm-project/build/bin/llvm-lit -v -j ${{ env.JOBS }} -o results.json .
+          # ../llvm-project/build/bin/llvm-lit -v -j ${{ env.JOBS }} -o results.json .
         env:
           JOBS: 32
 
+      - name: Cache pip packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Install analysis tools
         run: |
-          # sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install pandas scipy
+          pip3 install -r requirements.txt
+    
+      # - name: Install analysis tools
+      #   run: |
+      #     # sudo apt-get update
+      #     sudo apt-get install -y python3-pip
+      #     pip3 install pandas scipy
 
       - name: Analyze benchmark results
         run: |
