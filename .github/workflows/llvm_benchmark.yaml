@@ -51,7 +51,7 @@ jobs:
           cmake -G Ninja \
             -DLLVM_ENABLE_PROJECTS="clang" \
             -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
-            -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+            -DLLVM_TARGETS_TO_BUILD="AArch64" \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_ASSERTIONS=ON \
             -DCMAKE_C_FLAGS="-mcpu=ampere1" \
