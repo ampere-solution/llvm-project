@@ -62,7 +62,7 @@ jobs:
       - name: Build LLVM
         run: |
           cd llvm-project/build
-          ninja
+          ninja -j$(nproc)
         env:
           LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'x86' && 64 || 64 }}
 
