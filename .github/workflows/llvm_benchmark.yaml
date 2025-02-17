@@ -109,10 +109,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ccache
           
-      # - name: Set up tmpfs for test-suite-build
-      #   run: |
-      #     mkdir -p /tmp/test-suite-build
-      #     mount -t tmpfs -o size=2G tmpfs /tmp/test-suite-build
+      
 
       # - name: Execute tests
       #   run: |
@@ -132,10 +129,17 @@ jobs:
       #     mkdir -p /dev/shm/test-suite-build
       #     cp -r test-suite-build/* /dev/shm/test-suite-build/
 
+      - name: Set up tmpfs for test-suite-build
+        run: |
+          mkdir -p /tmp/test-suite-build
+          cp -r test-suite-build/* /tmp/test-suite-build/
+
+
       - name: Execute tests
         run: |
-          cd test-suite-build
+          # cd test-suite-build
           # cd /dev/shm/test-suite-build
+          cd /tmp/test-suite-build
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) --filter='MultiSource/Applications' -o results.json .
           # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
           ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
