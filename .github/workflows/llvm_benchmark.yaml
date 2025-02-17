@@ -30,13 +30,7 @@ jobs:
           uname -a
           lsb_release -a || cat /etc/os-release
           lscpu
-
-      - name: Set CPU governor to performance (requires sudo privileges)
-        run: |
-          for cpu in /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor; do
-            echo performance | sudo tee $cpu;
-          done
-          
+        
       
       - name: Checkout LLVM source code
         uses: actions/checkout@v4
@@ -47,6 +41,7 @@ jobs:
       - name: Set up build environment
         run: |
           sudo apt-get update
+          sudo apt-get install -y ccache
           sudo apt-get install -y build-essential cmake ninja-build python3
 
       - name: Configure LLVM build
@@ -59,6 +54,8 @@ jobs:
             -DLLVM_TARGETS_TO_BUILD="AArch64" \
             -DCMAKE_BUILD_TYPE=RelWithDebInfo \
             -DLLVM_ENABLE_ASSERTIONS=OFF \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             ../llvm
             # -DCMAKE_C_FLAGS="-mcpu=ampere1" \
             # -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
