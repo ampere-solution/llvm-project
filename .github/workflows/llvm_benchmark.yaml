@@ -51,14 +51,14 @@ jobs:
           cmake -G Ninja \
             -DLLVM_ENABLE_PROJECTS="clang" \
             -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
-            -DLLVM_TARGETS_TO_BUILD="AArch64" \
-            -DCMAKE_BUILD_TYPE=RelWithDebInfo \
-            -DLLVM_ENABLE_ASSERTIONS=OFF \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DLLVM_ENABLE_ASSERTIONS=ON \
             ../llvm
             # -DCMAKE_C_FLAGS="-mcpu=ampere1" \
             # -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
+            # -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            # -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             
 
 
