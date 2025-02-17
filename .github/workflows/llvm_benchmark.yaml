@@ -123,11 +123,14 @@ jobs:
       #   env:
       #     JOBS: 32
 
+      - name: Increase /dev tmpfs size to 4G
+        run: |
+          sudo mount -o remount,size=4G /dev
+
       - name: Set up in-memory test directory
         run: |
           mkdir -p /dev/shm/test-suite-build
-          # cp -r test-suite-build/* /dev/shm/test-suite-build/
-          rsync -av --exclude='**/*.o' test-suite-build/ /dev/shm/test-suite-build/
+          cp -r test-suite-build/* /dev/shm/test-suite-build/
 
       - name: Execute tests
         run: |
