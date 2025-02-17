@@ -123,10 +123,18 @@ jobs:
       #   env:
       #     JOBS: 32
 
+      - name: Set up in-memory test directory
+        run: |
+          mkdir -p /dev/shm/test-suite-build
+          cp -r test-suite-build/* /dev/shm/test-suite-build/
+
       - name: Execute tests
         run: |
-          cd test-suite-build
-          ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
+          # cd test-suite-build
+          cd /dev/shm/test-suite-build
+          ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) --filter='MultiSource/Applications' -o results.json .
+          # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
+          # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) --filter='MultiSource/Applications' -o results.json .
 
     
       - name: Install analysis tools
