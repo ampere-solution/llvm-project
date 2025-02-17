@@ -126,7 +126,8 @@ jobs:
       - name: Set up in-memory test directory
         run: |
           mkdir -p /dev/shm/test-suite-build
-          cp -r test-suite-build/* /dev/shm/test-suite-build/
+          # cp -r test-suite-build/* /dev/shm/test-suite-build/
+          rsync -av --exclude='**/*.o' test-suite-build/ /dev/shm/test-suite-build/
 
       - name: Execute tests
         run: |
