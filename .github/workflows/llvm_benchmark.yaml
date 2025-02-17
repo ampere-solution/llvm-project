@@ -97,6 +97,8 @@ jobs:
             -DCMAKE_CXX_COMPILER=${{ github.workspace }}/llvm-project/build/bin/clang++ \
             -DTEST_SUITE_RUN_TYPE=ref \
             -DTEST_SUITE_SUBDIRS=MultiSource \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             ../test-suite
 
       - name: Run benchmark
@@ -133,16 +135,19 @@ jobs:
         run: |
           mkdir -p /tmp/test-suite-build
           cp -r test-suite-build/* /tmp/test-suite-build/
+          pwd 
+          ls -al
+          df -h .
 
 
       - name: Execute tests
         run: |
-          # cd test-suite-build
+          cd test-suite-build
           pwd
-          cd /tmp/test-suite-build
-          # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) --filter='MultiSource/Applications' -o results.json .
+          # cd /tmp/test-suite-build
+          ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
           # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
-          /home/runner/_work/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
+          # /home/runner/_work/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
 
     
       - name: Install analysis tools
