@@ -138,11 +138,10 @@ jobs:
       - name: Execute tests
         run: |
           # cd test-suite-build
-          # cd /dev/shm/test-suite-build
           cd /tmp/test-suite-build
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) --filter='MultiSource/Applications' -o results.json .
           # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
-          ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
+          ~/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
 
     
       - name: Install analysis tools
