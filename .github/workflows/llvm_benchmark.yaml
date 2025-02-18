@@ -133,10 +133,8 @@ jobs:
 
       - name: Set up tmpfs for test-suite-build
         run: |
-          # mkdir -p /tmp/test-suite-build
-          # cp -r test-suite-build/* /tmp/test-suite-build/
-          mkdir -p /proc/acpi/test-suite-build
-          cp -r test-suite-build/* /proc/acpi/test-suite-build/
+          mkdir -p /dev/test-suite-build
+          cp -r test-suite-build/* /dev/test-suite-build/
           pwd 
           ls -al
           df -h .
@@ -146,16 +144,12 @@ jobs:
         run: |
           # cd test-suite-build
           pwd
-          # cd /tmp/test-suite-build
-          cd /proc/acpi/test-suite-build
+          cd /dev/test-suite-build
           ls -al
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
           /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
-          # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
-          # /home/runner/_work/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
 
-    
       - name: Install analysis tools
         run: |
           sudo apt-get update
