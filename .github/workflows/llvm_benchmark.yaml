@@ -141,14 +141,14 @@ jobs:
           ls -al /dev/shm
           df -h /dev/shm
           # sudo cp -r test-suite-build/* /dev/shm/test-suite-build/
-          sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeCache.txt /dev/shm/test-suite-build/
-          sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeFiles /dev/shm/test-suite-build/
-          sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/MultiSource /dev/shm/test-suite-build/
-          sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.cfg /dev/shm/test-suite-build/
-          sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.site.cfg /dev/shm/test-suite-build/
-          sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/litsupport /dev/shm/test-suite-build/
-          sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/tools /dev/shm/test-suite-build/
-          sleep 200
+          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeCache.txt /dev/shm/test-suite-build/
+          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeFiles /dev/shm/test-suite-build/
+          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/MultiSource /dev/shm/test-suite-build/
+          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.cfg /dev/shm/test-suite-build/
+          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.site.cfg /dev/shm/test-suite-build/
+          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/litsupport /dev/shm/test-suite-build/
+          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/tools /dev/shm/test-suite-build/
+          sleep 600
           
 
 
