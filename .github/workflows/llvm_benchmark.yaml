@@ -99,6 +99,8 @@ jobs:
             -DTEST_SUITE_SUBDIRS=MultiSource \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_C_FLAGS="-mcpu=ampere1" \
+            -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
             ../test-suite
 
       - name: Run benchmark
@@ -131,32 +133,32 @@ jobs:
       #     mkdir -p /dev/shm/test-suite-build
       #     cp -r test-suite-build/* /dev/shm/test-suite-build/
 
-      - name: Set up tmpfs for test-suite-build
-        run: |
-          df -h
-          sudo mkdir -p /dev/shm/test-suite-build
-          pwd 
-          ls -al
-          df -h .
-          ls -al /dev/shm
-          df -h /dev/shm
-          # sudo cp -r test-suite-build/* /dev/shm/test-suite-build/
-          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeCache.txt /dev/shm/test-suite-build/
-          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeFiles /dev/shm/test-suite-build/
-          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/MultiSource /dev/shm/test-suite-build/
-          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.cfg /dev/shm/test-suite-build/
-          # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.site.cfg /dev/shm/test-suite-build/
-          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/litsupport /dev/shm/test-suite-build/
-          # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/tools /dev/shm/test-suite-build/
-          sleep 600
+      # - name: Set up tmpfs for test-suite-build
+      #   run: |
+      #     df -h
+      #     sudo mkdir -p /dev/shm/test-suite-build
+      #     pwd 
+      #     ls -al
+      #     df -h .
+      #     ls -al /dev/shm
+      #     df -h /dev/shm
+      #     # sudo cp -r test-suite-build/* /dev/shm/test-suite-build/
+      #     # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeCache.txt /dev/shm/test-suite-build/
+      #     # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/CMakeFiles /dev/shm/test-suite-build/
+      #     # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/MultiSource /dev/shm/test-suite-build/
+      #     # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.cfg /dev/shm/test-suite-build/
+      #     # sudo cp /home/runner/_work/llvm-project/llvm-project/test-suite-build/lit.site.cfg /dev/shm/test-suite-build/
+      #     # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/litsupport /dev/shm/test-suite-build/
+      #     # sudo cp -r /home/runner/_work/llvm-project/llvm-project/test-suite-build/tools /dev/shm/test-suite-build/
+      #     sleep 600
           
 
 
       - name: Execute tests
         run: |
-          # cd test-suite-build
+          cd test-suite-build
           pwd
-          cd /dev/shm/test-suite-build
+          # cd /dev/shm/test-suite-build
           ls -al
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
