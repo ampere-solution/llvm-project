@@ -140,7 +140,8 @@ jobs:
           df -h .
           ls -al /dev/shm
           df -h /dev/shm
-          sudo cp -r test-suite-build/* /dev/shm/test-suite-build/
+          # sudo cp -r test-suite-build/* /dev/shm/test-suite-build/
+          sleep 200
           
 
 
