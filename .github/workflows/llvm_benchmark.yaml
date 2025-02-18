@@ -54,8 +54,8 @@ jobs:
             -DLLVM_TARGETS_TO_BUILD="all" \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_ASSERTIONS=ON \
-            -DCMAKE_C_FLAGS="-mcpu=ampere1" \
-            -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
+            -DCMAKE_C_FLAGS="-mcpu=ampere1 -O3" \
+            -DCMAKE_CXX_FLAGS="-mcpu=ampere1 -O3" \
             ../llvm
             
             
@@ -97,8 +97,8 @@ jobs:
             -DTEST_SUITE_SUBDIRS=MultiSource \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_TARGETS_TO_BUILD="all" \
-            -DCMAKE_C_FLAGS="-mcpu=ampere1" \
-            -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
+            -DCMAKE_C_FLAGS="-mcpu=ampere1 -O3" \
+            -DCMAKE_CXX_FLAGS="-mcpu=ampere1 -O3" \
             ../test-suite
 
       - name: Run benchmark
