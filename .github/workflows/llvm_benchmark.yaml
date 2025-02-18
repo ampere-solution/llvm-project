@@ -133,6 +133,7 @@ jobs:
 
       - name: Set up tmpfs for test-suite-build
         run: |
+          df -h
           sudo mkdir -p /etc/hosts/test-suite-build
           pwd 
           ls -al
