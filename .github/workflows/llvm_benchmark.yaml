@@ -133,13 +133,13 @@ jobs:
 
       - name: Set up tmpfs for test-suite-build
         run: |
-          sudo mkdir -p /dev/test-suite-build
+          sudo mkdir -p /var/tmp/test-suite-build
           pwd 
           ls -al
           df -h .
-          ls -al /dev/
-          df -h /dev/
-          sudo cp -r test-suite-build/* /dev/test-suite-build/
+          ls -al /var/tmp/
+          df -h /var/tmp/
+          sudo cp -r test-suite-build/* /var/tmp/test-suite-build/
           
 
 
@@ -147,7 +147,7 @@ jobs:
         run: |
           # cd test-suite-build
           pwd
-          cd /dev/test-suite-build
+          cd /var/tmp/test-suite-build
           ls -al
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
