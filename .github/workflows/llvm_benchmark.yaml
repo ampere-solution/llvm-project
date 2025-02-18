@@ -133,8 +133,8 @@ jobs:
 
       - name: Set up tmpfs for test-suite-build
         run: |
-          mkdir -p /dev/test-suite-build
-          cp -r test-suite-build/* /dev/test-suite-build/
+          sudo mkdir -p /dev/test-suite-build
+          sudo cp -r test-suite-build/* /dev/test-suite-build/
           pwd 
           ls -al
           df -h .
