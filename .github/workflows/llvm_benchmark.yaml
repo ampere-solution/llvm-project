@@ -165,7 +165,10 @@ jobs:
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
           # sudo /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
-          sudo taskset -c 0-191 /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
+          # sudo taskset -c 0-191 /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
+          ../llvm-project/build/bin/llvm-lit -v -j ${{ env.JOBS }} -o results.json .
+        env:
+          JOBS: 4
 
       - name: Install analysis tools
         run: |
