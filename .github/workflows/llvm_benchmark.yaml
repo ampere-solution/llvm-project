@@ -55,8 +55,8 @@ jobs:
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_ASSERTIONS=ON \
             -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=ON \
-            -DCMAKE_C_FLAGS="-mcpu=ampere1 -O3" \
-            -DCMAKE_CXX_FLAGS="-mcpu=ampere1 -O3" \
+            -DCMAKE_C_FLAGS="-mcpu=ampere1 -mfpu=neon -O3 -flto -fopenmp " \
+            -DCMAKE_CXX_FLAGS="-mcpu=ampere1 -mfpu=neon -O3 -flto -fopenmp " \
             ../llvm
             
             
