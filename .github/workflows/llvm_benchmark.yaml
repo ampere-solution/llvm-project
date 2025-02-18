@@ -51,13 +51,11 @@ jobs:
           cmake -G Ninja \
             -DLLVM_ENABLE_PROJECTS="clang" \
             -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
-            -DLLVM_TARGETS_TO_BUILD="AArch64" \
+            -DLLVM_TARGETS_TO_BUILD="all" \
             -DCMAKE_BUILD_TYPE=Release \
             -DLLVM_ENABLE_ASSERTIONS=ON \
             -DCMAKE_C_FLAGS="-mcpu=ampere1" \
             -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             ../llvm
             
             
@@ -98,9 +96,7 @@ jobs:
             -DTEST_SUITE_RUN_TYPE=ref \
             -DTEST_SUITE_SUBDIRS=MultiSource \
             -DCMAKE_BUILD_TYPE=Release \
-            -DLLVM_TARGETS_TO_BUILD="AArch64" \
-            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DLLVM_TARGETS_TO_BUILD="all" \
             -DCMAKE_C_FLAGS="-mcpu=ampere1" \
             -DCMAKE_CXX_FLAGS="-mcpu=ampere1" \
             ../test-suite
@@ -168,7 +164,7 @@ jobs:
           # sudo taskset -c 0-191 /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
           ../llvm-project/build/bin/llvm-lit -v -j ${{ env.JOBS }} -o results.json .
         env:
-          JOBS: 4
+          JOBS: 8
 
       - name: Install analysis tools
         run: |
