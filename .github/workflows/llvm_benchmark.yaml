@@ -151,7 +151,7 @@ jobs:
           ls -al
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
-          /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
+          sudo /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o /home/runner/_work/llvm-project/llvm-project/test-suite-build/results.json .
 
       - name: Install analysis tools
         run: |
