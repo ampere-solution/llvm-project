@@ -133,8 +133,10 @@ jobs:
 
       - name: Set up tmpfs for test-suite-build
         run: |
-          mkdir -p /tmp/test-suite-build
-          cp -r test-suite-build/* /tmp/test-suite-build/
+          # mkdir -p /tmp/test-suite-build
+          # cp -r test-suite-build/* /tmp/test-suite-build/
+          mkdir -p /proc/acpi/test-suite-build
+          cp -r test-suite-build/* /proc/acpi/test-suite-build/
           pwd 
           ls -al
           df -h .
@@ -144,7 +146,8 @@ jobs:
         run: |
           # cd test-suite-build
           pwd
-          cd /tmp/test-suite-build
+          # cd /tmp/test-suite-build
+          cd /proc/acpi/test-suite-build
           ls -al
           df -h .
           # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
