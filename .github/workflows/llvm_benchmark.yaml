@@ -126,10 +126,10 @@ jobs:
       #   run: |
       #     sudo mount -o remount,size=4G /dev
 
-      # - name: Set up in-memory test directory
-      #   run: |
-      #     mkdir -p /dev/shm/test-suite-build
-      #     cp -r test-suite-build/* /dev/shm/test-suite-build/
+      - name: Set up in-memory test directory
+        run: |
+          mkdir -p /dev/shm/test-suite-build
+          cp -r test-suite-build/* /dev/shm/test-suite-build/
 
       - name: Set up tmpfs for test-suite-build
         run: |
@@ -142,10 +142,11 @@ jobs:
 
       - name: Execute tests
         run: |
-          cd test-suite-build
+          # cd test-suite-build
           pwd
-          # cd /tmp/test-suite-build
-          ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
+          cd /tmp/test-suite-build
+          # ../llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
+          /home/runner/_work/llvm-project/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
           # ../llvm-project/build/bin/llvm-lit -j$(nproc) -o results.json .
           # /home/runner/_work/llvm-project/llvm-project/build/bin/llvm-lit -j$(( $(nproc) - 2 )) -o results.json .
 
