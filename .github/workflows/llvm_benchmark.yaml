@@ -97,6 +97,8 @@ jobs:
             -DCMAKE_CXX_COMPILER=${{ github.workspace }}/llvm-project/build/bin/clang++ \
             -DTEST_SUITE_RUN_TYPE=ref \
             -DTEST_SUITE_SUBDIRS=MultiSource \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DLLVM_TARGETS_TO_BUILD="AArch64" \
             -DCMAKE_C_COMPILER_LAUNCHER=ccache \
             -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
             -DCMAKE_C_FLAGS="-mcpu=ampere1" \
