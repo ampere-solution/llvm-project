@@ -1,170 +1,170 @@
-# This is a basic workflow to help you get started with Actions
+# # This is a basic workflow to help you get started with Actions
 
-name: LLVM-CICD-OKE
+# name: LLVM-CICD-OKE
 
-# Controls when the workflow will run 
-on:
-  push:  
-    branches: [ "main" ]     
-  pull_request:
-    branches: [ "main" ]    
-  workflow_dispatch:
+# # Controls when the workflow will run 
+# on:
+#   push:  
+#     branches: [ "main" ]     
+#   pull_request:
+#     branches: [ "main" ]    
+#   workflow_dispatch:
 
-jobs:
-  LLVM_build:
-    permissions:
-      contents: write
-    strategy:
-      matrix:
-        arch: [oci-oke]
-    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm'  }}
+# jobs:
+#   LLVM_build:
+#     permissions:
+#       contents: write
+#     strategy:
+#       matrix:
+#         arch: [oci-oke]
+#     runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm'  }}
 
-    steps:
-      - name: Log Operating System Details
-        run: |
-          echo "Architecture: ${{ matrix.arch }}"
-          uname -a
-          curl https://github.com/ampere-solution/llvm-project.git  
-          lsb_release -a || cat /etc/os-release
-          lscpu
+#     steps:
+#       - name: Log Operating System Details
+#         run: |
+#           echo "Architecture: ${{ matrix.arch }}"
+#           uname -a
+#           curl https://github.com/ampere-solution/llvm-project.git  
+#           lsb_release -a || cat /etc/os-release
+#           lscpu
           
-      - name: Checkout LLVM source code
-        uses: actions/checkout@v4
-        with:
-          repository: ampere-solution/llvm-project
-          path: llvm-project
+#       - name: Checkout LLVM source code
+#         uses: actions/checkout@v4
+#         with:
+#           repository: ampere-solution/llvm-project
+#           path: llvm-project
 
-      - name: Set up build environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build python3
+#       - name: Set up build environment
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y build-essential cmake ninja-build python3
 
-      - name: Configure LLVM build
-        run: |
-          mkdir -p llvm-project/build
-          cd llvm-project/build
-          cmake -G Ninja \
-           -DLLVM_ENABLE_PROJECTS="clang" \
-            -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
-           -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
-           -DCMAKE_BUILD_TYPE=Release \
-           -DLLVM_ENABLE_ASSERTIONS=ON \
-           ../llvm
+#       - name: Configure LLVM build
+#         run: |
+#           mkdir -p llvm-project/build
+#           cd llvm-project/build
+#           cmake -G Ninja \
+#            -DLLVM_ENABLE_PROJECTS="clang" \
+#             -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
+#            -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+#            -DCMAKE_BUILD_TYPE=Release \
+#            -DLLVM_ENABLE_ASSERTIONS=ON \
+#            ../llvm
 
-      - name: Build LLVM
-        run: |
-          cd llvm-project/build
-          ninja
-        env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
+#       - name: Build LLVM
+#         run: |
+#           cd llvm-project/build
+#           ninja
+#         env:
+#           LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
  
-      - name: Display build information
-        run: |
-          echo "Architecture: ${{ matrix.arch }}"
-          echo "Build completed on $(date)"
+#       - name: Display build information
+#         run: |
+#           echo "Architecture: ${{ matrix.arch }}"
+#           echo "Build completed on $(date)"
              
-      - name: Commit changes
-        env: 
-          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-          CI_COMMIT_AUTHOR: tinguyen-ampere
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
-        run: |
-          pwd
-          cd llvm-project
-          ls -la
-          pwd
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "tinguyen@amperecomputing.com"
-          echo 'Testing... ' >> README.md
-          git add ./README.md
-          git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
+#       - name: Commit changes
+#         env: 
+#           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+#           CI_COMMIT_AUTHOR: tinguyen-ampere
+#           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+#         run: |
+#           pwd
+#           cd llvm-project
+#           ls -la
+#           pwd
+#           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+#           git config --global user.email "tinguyen@amperecomputing.com"
+#           echo 'Testing... ' >> README.md
+#           git add ./README.md
+#           git commit -a -m "${{ env.CI_COMMIT_MESSAGE }}"
       
-############### Push action section #############
-      - name: Push changes
-        env:
-          PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
-          CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-          CI_COMMIT_AUTHOR: tinguyen-ampere
-        run: |
-          pwd
-          cd llvm-project
-          pwd
-          git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config --global user.email "tinguyen@amperecomputing.com"
-          git pull --rebase origin main
-          git branch -M main
-          git push https://${PAT_TOKEN}@github.com/ampere-solution/llvm-project.git HEAD:main
+# ############### Push action section #############
+#       - name: Push changes
+#         env:
+#           PAT_TOKEN: ${{ secrets.PAT_TOKEN }}
+#           CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
+#           CI_COMMIT_AUTHOR: tinguyen-ampere
+#         run: |
+#           pwd
+#           cd llvm-project
+#           pwd
+#           git config --global user.name "${{ env.CI_COMMIT_AUTHOR }}"
+#           git config --global user.email "tinguyen@amperecomputing.com"
+#           git pull --rebase origin main
+#           git branch -M main
+#           git push https://${PAT_TOKEN}@github.com/ampere-solution/llvm-project.git HEAD:main
 
-################ Continuous Deployment/Delivery ###########################################
-  Deploy:
-    needs: LLVM_build
-    strategy:
-      matrix:
-        arch: [oci-oke]
-    runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm' }}
+# ################ Continuous Deployment/Delivery ###########################################
+#   Deploy:
+#     needs: LLVM_build
+#     strategy:
+#       matrix:
+#         arch: [oci-oke]
+#     runs-on: ${{ matrix.arch == 'oci-oke' && 'arc-runner-set-oke-a1-40c-llvm' }}
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          repository: ampere-solution/llvm-project
-          path: llvm-project
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v4
+#         with:
+#           repository: ampere-solution/llvm-project
+#           path: llvm-project
 
-      - name: List repository contents
-        run: |
-          pwd
-          ls -la $GITHUB_WORKSPACE
-      - name: Set up build environment
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential cmake ninja-build python3
+#       - name: List repository contents
+#         run: |
+#           pwd
+#           ls -la $GITHUB_WORKSPACE
+#       - name: Set up build environment
+#         run: |
+#           sudo apt-get update
+#           sudo apt-get install -y build-essential cmake ninja-build python3
 
-      - name: Configure LLVM build
-        run: |
-          mkdir -p llvm-project/build
-          cd llvm-project/build
-          cmake -G Ninja \
-            -DLLVM_ENABLE_PROJECTS="clang" \
-             -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
-            -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DLLVM_ENABLE_ASSERTIONS=ON \
-            ../llvm
+#       - name: Configure LLVM build
+#         run: |
+#           mkdir -p llvm-project/build
+#           cd llvm-project/build
+#           cmake -G Ninja \
+#             -DLLVM_ENABLE_PROJECTS="clang" \
+#              -DLLVM_ENABLE_RUNTIMES="libunwind;libcxx;libcxxabi" \
+#             -DLLVM_TARGETS_TO_BUILD="AArch64;X86" \
+#             -DCMAKE_BUILD_TYPE=Release \
+#             -DLLVM_ENABLE_ASSERTIONS=ON \
+#             ../llvm
 
-      - name: Build LLVM
-        run: |
-          pwd
-          cd llvm-project/build
-          ninja
-        env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
+#       - name: Build LLVM
+#         run: |
+#           pwd
+#           cd llvm-project/build
+#           ninja
+#         env:
+#           LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci-oke' && 8 || 8 }}
           
-      - name: install LLVM
-        run: |
-          pwd
-          ls -la
-          cd llvm-project/build
-          sudo ninja install
-        env:
-          LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
+#       - name: install LLVM
+#         run: |
+#           pwd
+#           ls -la
+#           cd llvm-project/build
+#           sudo ninja install
+#         env:
+#           LLVM_PARALLEL_COMPILE_JOBS: ${{ matrix.arch == 'oci' && 8 || 8 }}
 
-      - name: Verify the installation
-        run: |
-          clang --version
-          llvm-config --version
+#       - name: Verify the installation
+#         run: |
+#           clang --version
+#           llvm-config --version
           
-      - name: Compile C file using LLVM compiler
-        run: |
-          pwd
-          cd llvm-project
-          pwd
-          ls -la
-          clang hello_world.c -o hello_world
+#       - name: Compile C file using LLVM compiler
+#         run: |
+#           pwd
+#           cd llvm-project
+#           pwd
+#           ls -la
+#           clang hello_world.c -o hello_world
 
-      - name: Run the compiled program
-        run: |
-          cd llvm-project
-          pwd
-          ./hello_world
+#       - name: Run the compiled program
+#         run: |
+#           cd llvm-project
+#           pwd
+#           ./hello_world
         
           
